@@ -12,7 +12,7 @@ Tab can be pressed to rotate the cycle backwards to undo a mistake
 
 # Poblems
 
-The undo action ca only be used with number keys, not if the card was entered through the keyboard
+The undo action ca only be used with number keys, not if the card was entered through the keyboa
 
 When a card is played in the game the elixer bar freezes for an amount of time, the program does not incorperate this
 
