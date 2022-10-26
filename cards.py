@@ -404,7 +404,7 @@ allCards = {
         "elixer": 3,
         "image": "./card_images/princess.png"
     },
-    "ra" :{
+    "rag" :{
         "name" : "RAGE",
         "elixer" : 2,
         "image" : "./card_images/rage.png"
