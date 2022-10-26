@@ -111,7 +111,7 @@ eps = 2.8
 def checkEps():
     global eps
     current = time.time()
-    if (round((current - start), 1) == 5):
+    if (round((current - start), 1) == 120):
         eps = 1.4
 
 def calcElixer(cardPlayed, code):
@@ -119,16 +119,18 @@ def calcElixer(cardPlayed, code):
     global elixer
     current = time.time()
 
+    if cardPlayed:
+        for card in cards.values():
+            if (user_text == card.code or code == card.code):
+                elixer -= card.elixer
+                time1 += 0.5
+
     if (round((current - time1), 1) >= eps):
         if elixer != 10:
             elixer += 1
         time1 = time.time()
 
-    if cardPlayed:
-        for card in cards.values():
-            if (user_text == card.code or code == card.code):
-                elixer -= card.elixer
-                time1 -= 0.5
+
 
 run = True
 while run:
