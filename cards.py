@@ -504,6 +504,11 @@ allCards = {
         "elixer" : 4,
         "image" : "./card_images/tesla.png"
     },
+    "t" :{
+        "name" : "TORNADO",
+        "elixer" : 3,
+        "image" : "./card_images/tornado.png"
+    },
     "l" :{
         "name" : "THE LOG",
         "elixer" : 2,

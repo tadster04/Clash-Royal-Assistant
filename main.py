@@ -128,6 +128,7 @@ def calcElixer(cardPlayed, code):
         for card in cards.values():
             if (user_text == card.code or code == card.code):
                 elixer -= card.elixer
+                time1 -= 0.5
 
 run = True
 while run:
