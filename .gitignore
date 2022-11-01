@@ -1,9 +1,9 @@
 
-#ignore virtual environment directory
+# ignore virtual environment directory
 env/
 
-#ignore __pycache__ directory
+# ignore __pycache__ directory
 __pycache__/
 
-#ignore .DS_Store directory
+# ignore .DS_Store directory
 .DS_Store

@@ -1,3 +1,4 @@
+from glob import glob
 import time
 import pygame
 from cards import allCards
@@ -12,6 +13,11 @@ screen = pygame.display.set_mode((dsW, dsH))
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 100)
 elixer = 6
+
+#used for calculating elixer
+time1 = time.time()
+start = time.time()
+eps = 2.8
 
 #text box variables
 base_font = pygame.font.Font(None, 32)
@@ -47,9 +53,6 @@ class Card:
     def getCard(self):
         return pygame. transform. scale(pygame.image.load(self.imagePath), (cardW, cardH))
 
-    def displayCard(self, cycle, px, py):
-        return screen.blit(cycle, pygame.Rect( px, py, cardW, cardH))
-
 
 cards = {
     1 : Card(allCards["temp"], "temp"),
@@ -66,8 +69,23 @@ cards = {
 inCycle = [cards[1], cards[2], cards[3], cards[4]]
 outCycle = [cards[5], cards[6], cards[7], cards[8]]
 
+# function to show the two cycle arrays for debuging
+def printCycle():
+    global cardsPlayed
+
+    print("In cycle:")
+    for card in inCycle:
+        print(card.name)
+    print("")
+    print("Out of cycle:")
+    for card in outCycle:
+        print(card.name)
+    print("")
+
+lastPos = 3
 def updateCycle(position):
     global lastPos
+
     lastPos = position
     card = inCycle[position]
 
@@ -77,22 +95,42 @@ def updateCycle(position):
     inCycle.insert(position, outCycle[0])
     outCycle.pop(0)
 
+    printCycle()
+
 #moves cycle backwards for undo action
+
+cardsPlayed = 8
 def undo():
+    global justAdded
     global elixer
+    global time1
+    global cardsPlayed
+    global lastPos
+    
     card = outCycle[3]
     elixer += card.elixer
+    time1 -= 0.5
+
     outCycle.pop(3)
     outCycle.insert(0, inCycle[lastPos])
-    inCycle.pop(lastPos)
-    inCycle.insert(lastPos, card)
 
- 
-cardsPlayed = 8
+    if card.code != justAdded.code:
+        inCycle.pop(lastPos)
+        inCycle.insert(lastPos, card)
+
+    else:
+        inCycle[lastPos] = Card(allCards["temp"], "temp")
+        cardsPlayed += 1
+
+    printCycle()
+
+
 def addCard():
+    global justAdded
     global cardsPlayed
 
     card = allCards[user_text]
+    justAdded = Card(card, user_text)
     cards[cardsPlayed] = Card(card, user_text)
 
 
@@ -103,16 +141,18 @@ def addCard():
         outCycle.pop(0)
 
     outCycle.append(cards[cardsPlayed])
-    cardsPlayed = cardsPlayed - 1
+    cardsPlayed -= 1
 
-time1 = time.time()
-start = time.time()
-eps = 2.8
+    printCycle()
+
+
+# checks for double elixer 
 def checkEps():
     global eps
     current = time.time()
     if (round((current - start), 1) == 120):
         eps = 1.4
+
 
 def calcElixer(cardPlayed, code):
     global time1
@@ -123,7 +163,8 @@ def calcElixer(cardPlayed, code):
         for card in cards.values():
             if (user_text == card.code or code == card.code):
                 elixer -= card.elixer
-                time1 += 0.5
+                if code != "temp":
+                    time1 += 0.5
 
     if (round((current - time1), 1) >= eps):
         if elixer != 10:
@@ -134,6 +175,7 @@ def calcElixer(cardPlayed, code):
 
 run = True
 while run:
+
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             if input_rect.collidepoint(event.pos):
@@ -159,7 +201,7 @@ while run:
                 calcElixer(True, inCycle[3].code)
                 updateCycle(3)
                 
-            if event.key == pygame.K_RETURN:
+            if event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
                 for i in allCards:
                     if user_text == i:
                         addCard()
@@ -177,7 +219,7 @@ while run:
             # Unicode standard is used for string
             # formation
             elif (event.key != pygame.K_1 and event.key != pygame.K_2 and event.key != pygame.K_3 and event.key != pygame.K_4
-            and event.key != pygame.K_RETURN and event.key != pygame.K_TAB):
+            and event.key != pygame.K_RETURN and event.key != pygame.K_TAB and event.key != pygame.K_SPACE):
                 user_text += event.unicode
 
     calcElixer(False, False)

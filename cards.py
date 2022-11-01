@@ -1,6 +1,3 @@
-from email.mime import image
-
-
 allCards = {
     "temp" : {
         "name" : "temp",
