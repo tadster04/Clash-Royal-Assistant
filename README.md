@@ -4,6 +4,8 @@ This program shows the oppenents elixer and card cycle to assit the player in ga
 
 # How to use
 
+Start the program when the game starts
+
 Enter the card that was played using the keyboard shortcuts found in cards.py and press either enter or space
 
 If the card was all ready played keys 1,2,3,4 should be used to indicate which card was played
@@ -20,4 +22,4 @@ Add new cards
 
 Fix problems
 
-Use machine learning to automaticly enter the cards played
+Use object detection to automaticly enter the cards played
